@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kortlayout — Brutal</title>
+  <style>
+    :root {
+      --bg: #f1efe8;
+      --surface: #ffffff;
+      --text: #0f0f0f;
+      --muted: #5c5c5c;
+      --line: #111111;
+      --accent: #1f5cff;
+      --max-width: 1380px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(to right, rgba(0,0,0,0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.06) 1px, transparent 1px),
+        var(--bg);
+      background-size: 32px 32px, 32px 32px, auto;
+      color: var(--text);
+    }
+
+    .page {
+      width: min(calc(100% - 24px), var(--max-width));
+      margin: 0 auto;
+      padding: 18px 0 44px;
+    }
+
+    .header {
+      margin-bottom: 18px;
+      border: 2px solid var(--line);
+      background: var(--surface);
+      padding: 16px;
+      box-shadow: 8px 8px 0 var(--line);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin: 0 0 14px;
+      padding: 5px 8px 4px;
+      border: 2px solid var(--line);
+      background: #ffe44d;
+      font-size: 0.74rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.3rem, 8vw, 5.6rem);
+      line-height: 0.88;
+      letter-spacing: -0.07em;
+      text-transform: uppercase;
+      font-weight: 900;
+      max-width: 9ch;
+    }
+
+    .intro {
+      max-width: 720px;
+      margin: 16px 0 0;
+      font-size: 0.98rem;
+      line-height: 1.45;
+      color: var(--text);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+      background: var(--surface);
+      border: 2px solid var(--line);
+      box-shadow: 8px 8px 0 var(--line);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 12px 12px 0 var(--accent);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 0 72%, rgba(31,92,255,0.08) 72% 100%);
+      pointer-events: none;
+    }
+
+    .card-media {
+      aspect-ratio: 16 / 10;
+      width: 100%;
+      background:
+        repeating-linear-gradient(
+          -45deg,
+          #efede6 0,
+          #efede6 14px,
+          #e2ded4 14px,
+          #e2ded4 28px
+        );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      border-bottom: 2px solid var(--line);
+      position: relative;
+    }
+
+    .card-media::after {
+      content: "LOGO AREA";
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      border: 2px solid var(--line);
+      background: var(--surface);
+      padding: 4px 6px;
+    }
+
+    .card-media img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-logo-placeholder {
+      width: 96px;
+      height: 96px;
+      border: 2px solid var(--line);
+      display: grid;
+      place-items: center;
+      color: var(--text);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 800;
+      background: var(--surface);
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-meta {
+      width: fit-content;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--text);
+      border: 2px solid var(--line);
+      padding: 4px 6px;
+      background: #d9ff57;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1.8rem;
+      line-height: 0.94;
+      letter-spacing: -0.06em;
+      text-transform: uppercase;
+      font-weight: 900;
+      max-width: 10ch;
+    }
+
+    .card-text {
+      margin: 0;
+      color: var(--text);
+      line-height: 1.45;
+      font-size: 0.95rem;
+      max-width: 38ch;
+    }
+
+    .card-link {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-top: 2px solid var(--line);
+      padding-top: 12px;
+    }
+
+    .card-link::after {
+      content: "→";
+      font-size: 1rem;
+    }
+
+    @media (min-width: 760px) {
+      .page {
+        width: min(calc(100% - 48px), var(--max-width));
+        padding-top: 28px;
+      }
+
+      .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      .header {
+        padding: 20px;
+        margin-bottom: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <p class="eyebrow">Projekt</p>
+      <h1>Kort. Hårt. Grafiskt.</h1>
+      <p class="intro">
+        Här är samma grundidé, men omgjord i en mer brutal och grafisk riktning: hårda linjer, tydliga ramar, starkare typografi, etiketter och mer visuell friktion.
+      </p>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <div class="card-media">
+          <div class="card-logo-placeholder">Logga</div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">Branding</div>
+          <h2 class="card-title">Nord Studio</h2>
+          <p class="card-text">Visuell identitet och digital riktning för ett nytt varumärke med fokus på tydlighet och närvaro.</p>
+          <a class="card-link" href="#">Se projekt</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <div class="card-logo-placeholder">Logga</div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">Webbdesign</div>
+          <h2 class="card-title">Frame Works</h2>
+          <p class="card-text">Designkoncept för en modern webbupplevelse där innehållet får vara i centrum.</p>
+          <a class="card-link" href="#">Se projekt</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <div class="card-logo-placeholder">Logga</div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">Kampanj</div>
+          <h2 class="card-title">Signal</h2>
+          <p class="card-text">Kreativt kampanjarbete med tydlig tonalitet, stark grafisk riktning och enkel struktur.</p>
+          <a class="card-link" href="#">Se projekt</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <div class="card-logo-placeholder">Logga</div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">Art Direction</div>
+          <h2 class="card-title">Monolith</h2>
+          <p class="card-text">Ett konceptuellt arbete där form, typografi och bildspråk hålls samman i en ren helhet.</p>
+          <a class="card-link" href="#">Se projekt</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <div class="card-logo-placeholder">Logga</div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">UI Design</div>
+          <h2 class="card-title">Local One</h2>
+          <p class="card-text">Gränssnittsdesign för en tjänst med fokus på översikt, tillgänglighet och ett lugnt uttryck.</p>
+          <a class="card-link" href="#">Se projekt</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <div class="card-logo-placeholder">Logga</div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">Digitalt koncept</div>
+          <h2 class="card-title">Common Ground</h2>
+          <p class="card-text">En flexibel kortlayout som enkelt kan fyllas med projekt, case, bilder eller logotyper.</p>
+          <a class="card-link" href="#">Se projekt</a>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
